@@ -78,19 +78,24 @@ on boot
 
     class_start default
 
+    # Init OTG control GPIO pins: 95 - OTG_VBUS, 86 - OTG_ID
+    write /sys/class/gpio/export 95
+    write /sys/class/gpio/export 86
+    write /sys/class/gpio/gpio95/direction out
+    write /sys/class/gpio/gpio86/direction out
+    write /sys/class/gpio/gpio86/value 1
+    write /sys/class/gpio/gpio95/value 1
+
 on property:sys.powerctl=*
     powerctl ${sys.powerctl}
 
 service ueventd /sbin/ueventd
     critical
-    seclabel u:r:ueventd:s0
 
 service healthd /sbin/healthd -n
     critical
-    seclabel u:r:healthd:s0
 
 service recovery /sbin/recovery
-    seclabel u:r:recovery:s0
 
 service setup_adbd /sbin/setup_adbd
     oneshot
@@ -98,12 +103,12 @@ service setup_adbd /sbin/setup_adbd
 service adbd /sbin/adbd --root_seclabel=u:r:su:s0 --device_banner=recovery
     disabled
     socket adbd stream 660 system system
-    seclabel u:r:adbd:s0
 
 service vold /sbin/minivold
     socket vold stream 0660 root mount
     ioprio be 2
-    seclabel u:r:recovery:s0
+
+service vbased /sbin/minivbased -u /dev/ttymxc2 -l 0 252 5 255
 
 # setup_adbd will start adb once it has checked the keys
 on property:service.adb.root=1

@@ -1,5 +1,3 @@
-ifeq ($(call my-dir),$(call project-path-for,recovery))
-
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -241,5 +239,3 @@ include $(commands_recovery_local_path)/su/Android.mk
 include $(commands_recovery_local_path)/voldclient/Android.mk
 include $(commands_recovery_local_path)/loki/Android.mk
 commands_recovery_local_path :=
-
-endif
