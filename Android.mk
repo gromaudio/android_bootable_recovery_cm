@@ -168,6 +168,7 @@ LOCAL_ADDITIONAL_DEPENDENCIES := \
 
 LOCAL_ADDITIONAL_DEPENDENCIES += \
     minivold \
+    minivbased \
     recovery_e2fsck \
     recovery_mke2fs \
     recovery_tune2fs \
